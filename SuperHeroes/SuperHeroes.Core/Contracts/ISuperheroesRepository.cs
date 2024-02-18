@@ -2,6 +2,6 @@ namespace SuperHeroes.Core.Contracts;
 
 public interface ISuperheroesRepository
 {
-    Task<ICollection<int>> GetFavouritesAsync(int userId, CancellationToken ct);
-    Task AddFavouriteAsync(int userId, int superheroId, CancellationToken ct);
+    Task<ICollection<int>> GetFavouritesAsync(string userToken, CancellationToken ct);
+    Task AddFavouriteAsync(string userToken, int superheroId, CancellationToken ct);
 }

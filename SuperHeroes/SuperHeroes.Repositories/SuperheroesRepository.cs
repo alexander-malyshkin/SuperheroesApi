@@ -11,20 +11,26 @@ public sealed class SuperheroesRepository : ISuperheroesRepository
         _dbContext = dbContext;
     }
     
-    public async Task<ICollection<int>> GetFavouritesAsync(int userId, CancellationToken ct)
+    public async Task<ICollection<int>> GetFavouritesAsync(string userToken, CancellationToken ct)
     {
         var userFavourites = await _dbContext.UserFavouriteSuperheroes
-            .Where(uf => uf.UserId == userId)
+            .Where(uf => uf.UserToken == userToken)
             .Select(uf => uf.SuperheroId)
             .ToArrayAsync(ct);
         return userFavourites;
     }
     
-    public async Task AddFavouriteAsync(int userId, int superheroId, CancellationToken ct)
+    public async Task AddFavouriteAsync(string userToken, int superheroId, CancellationToken ct)
     {
+        if (await _dbContext
+                .UserFavouriteSuperheroes
+                .AnyAsync(_ => _.SuperheroId == superheroId && _.UserToken == userToken, 
+                    cancellationToken: ct))
+            return;
+        
         var userFavourite = new UserFavouriteSuperhero
         {
-            UserId = userId,
+            UserToken = userToken, 
             SuperheroId = superheroId
         };
         _dbContext.UserFavouriteSuperheroes.Add(userFavourite);

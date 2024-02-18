@@ -1,3 +1,4 @@
+using SuperHeroes.Application.Queries.ViewModels;
 using SuperHeroes.Application.Shared;
 
 namespace SuperHeroes.Application.Queries.GetSuperheroesByName;

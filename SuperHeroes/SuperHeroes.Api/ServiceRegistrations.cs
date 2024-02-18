@@ -1,6 +1,8 @@
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using SuperHeroes.Core.Contracts;
 using SuperHeroes.Integrations.ExternalSuperheroesApi;
+using SuperHeroes.Repositories;
 
 namespace SuperHeroes.Api;
 
@@ -24,6 +26,16 @@ public static class ServiceRegistrations
             })
             .AddStandardResilienceHandler();
         
+        return services;
+    }
+    
+    public static IServiceCollection RegisterDalServices(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddDbContext<SuperheroesDbContext>(options =>
+        {
+            options.UseSqlServer(config.GetConnectionString("SuperheroesDb"));
+        });
+        services.AddScoped<ISuperheroesRepository, SuperheroesRepository>();
         return services;
     }
 }
