@@ -14,15 +14,18 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
     private readonly HttpClient _httpClient;
     private readonly ILogger<SuperheroesExternalProvider> _logger;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    public SuperheroesExternalProvider(IHttpClientFactory factory, ILogger<SuperheroesExternalProvider> logger, JsonSerializerOptions jsonSerializerOptions)
+    private readonly IAccessTokenProvider _accessTokenProvider;
+    public SuperheroesExternalProvider(IHttpClientFactory factory, ILogger<SuperheroesExternalProvider> logger, JsonSerializerOptions jsonSerializerOptions, IAccessTokenProvider accessTokenProvider)
     {
         _logger = logger;
         _jsonSerializerOptions = jsonSerializerOptions;
+        _accessTokenProvider = accessTokenProvider;
         _httpClient = factory.CreateClient(nameof(SuperheroesExternalProvider));
     }
     public async Task<ICollection<SuperHero>> SearchByNameAsync(string name, CancellationToken ct)
     {
-        var relativeSearchPath = $"search/{name}";
+        string facebookToken = _accessTokenProvider.GetToken();
+        var relativeSearchPath = $"{facebookToken}/search/{name}";
         var foundSuperheroes = await GetFromNetwork<SuperheroSearchResponse>(relativeSearchPath, ct);
         if (foundSuperheroes is null)
             return Array.Empty<SuperHero>();
@@ -47,7 +50,8 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
 
     public async Task<SuperHero?> GetById(int id, CancellationToken ct)
     {
-        var relativePath = $"{id}";
+        string facebookToken = _accessTokenProvider.GetToken();
+        var relativePath = $"{facebookToken}/{id}";
         var superHeroResponse = await GetFromNetwork<GetSuperHeroByIdResponse>(relativePath, ct);
         if (superHeroResponse is null)
             return null;
