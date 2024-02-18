@@ -22,11 +22,13 @@ public static class ServiceRegistrations
         });
         
         services
+            // registering the IHttpClientFactory and setting the base address for the external provider
             .AddHttpClient(nameof(SuperheroesExternalProvider), client =>
             {
                 client.BaseAddress = new Uri($"https://superheroapi.com/api/");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             })
+            // adding resilience policies for the HTTP client (timeout, circuit breaker, retry, etc.)
             .AddStandardResilienceHandler();
         
         return services;
@@ -41,12 +43,14 @@ public static class ServiceRegistrations
             return ConnectionMultiplexer.Connect(redisOptions);
         });
 
+        // registering all generic implementations
         services.AddSingleton(typeof(ICacheService<>), typeof(RedisService<>));
         return services;
     }
 
     public static IServiceCollection RegisterDalServices(this IServiceCollection services, IConfiguration config)
     {
+        // for better performance, we could use the pool of db contexts
         services.AddDbContext<SuperheroesDbContext>(options =>
         {
             options.UseSqlServer(config.GetConnectionString("SuperheroesDb"));
@@ -57,6 +61,7 @@ public static class ServiceRegistrations
     
     private static void RegisterSuperheroesProvider(this IServiceCollection services)
     {
+        // registering the cached version of the superheroes provider as a decorator
         services.RegisterDecorator<ISuperheroesExternalProvider, SuperheroesExternalProvider, CachedSuperheroesExternalProvider>
             (SuperheroesExternalProviderConstants.PlainSuperheroesProviderKey);
     }

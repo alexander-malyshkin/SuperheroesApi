@@ -12,8 +12,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // Registering all endpoint classes that inherit from EndpointBase
         builder.Services.AddFastEndpoints();
+        
+        // Registering all queries and commands from the application layer
         builder.Services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssemblies(typeof(SuperHeroes.Application.Shared.ResponseBase).Assembly);
@@ -40,6 +42,7 @@ public class Program
 
         app.UseAuthorization();
 
+        // Registering all endpoint routes
         app.UseFastEndpoints(config =>
         {
             config.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;

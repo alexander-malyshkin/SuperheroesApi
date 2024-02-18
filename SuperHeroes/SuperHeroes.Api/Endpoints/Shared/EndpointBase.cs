@@ -30,12 +30,24 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
 
     protected EndpointBase(ISender mediator, ILoggerFactory loggerFactory, Http httpVerb, string route, string summary, HttpStatusCode successStatusCode)
     {
+        // http verb defines the HTTP method for the endpoint
         _httpVerb = httpVerb;
+        
+        // route defines the relative URL for the endpoint
         _route = route;
+        
+        // summary is used for OpenAPI documentation
         _summary = summary;
+        
+        // status code that will be used for a successful response
         _successStatusCode = successStatusCode;
+        
+        // mediator is used to send the request to the application layer
         _mediator = mediator;
+        
         _logger = loggerFactory.CreateLogger(GetType());
+        
+        // we use the name of the handler to log the exceptions
         _handlerName = GetType().Name;
     }
     
@@ -69,17 +81,21 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
     {
         try
         {
+            // we send the request to the mediator
             TResponse response = await _mediator.Send(req, ct);
 
+            // if the request is not valid, we send a bad request response
             if (!response.RequestValid)
             {
                 await SendErrorResponse(response.Title, response.Details, HttpStatusCode.BadRequest, ct);
             }
+            // if the request is valid and the response is successful, we send the response
             else if (StatusCodeWritable(_successStatusCode))
             {
                 await SendAsync(response, (int)_successStatusCode, cancellation: ct);
             }
         }
+        // we treat both FluentValidation and DataAnnotations validation exceptions in the same way
         catch (FluentValidation.ValidationException e)
         {
             await HandleValidationException(e, ct);
@@ -88,16 +104,19 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
         {
             await HandleValidationException(e, ct);
         }
+        // typically, this exception is thrown in 3rd party services
         catch (UnauthorizedAccessException e)
         {
             _logger.LogWarning(e, e.Message);
             await SendErrorResponse(nameof(HttpStatusCode.Forbidden), e.Message, HttpStatusCode.Forbidden, ct);
         }
+        // typically, this exception is thrown in 3rd party services
         catch (IntegrationReadException e)
         {
             _logger.LogError(e, e.Message);
             await SendErrorResponse(nameof(HttpStatusCode.ServiceUnavailable), e.Message, HttpStatusCode.ServiceUnavailable, ct);
         }
+        // if we haven't found some entity, we send a not found response
         catch (Exception e)
             when (TryRetrieveEntityNotFoundException(e) is not null)
         {
@@ -105,6 +124,7 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
             await SendErrorResponse(nameof(HttpStatusCode.NotFound), RetrieveEntityNotFoundExceptionMessage(e),
                 HttpStatusCode.NotFound, ct);
         }
+        // if we don't know the exact exception, we send an internal server error response
         catch (Exception e)
         {
             _logger.LogError(e, FailedToHandleRequest, _handlerName, req);
@@ -134,6 +154,7 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
     
     private string RetrieveEntityNotFoundExceptionMessage(Exception e)
     {
+        // we try to determine if the exception is an EntityNotFoundException or caused by it
         EntityNotFoundException? entityNotFoundException = TryRetrieveEntityNotFoundException(e);
         if (entityNotFoundException is null)
         {
