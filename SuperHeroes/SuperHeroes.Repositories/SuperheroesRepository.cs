@@ -36,4 +36,15 @@ public sealed class SuperheroesRepository : ISuperheroesRepository
         _dbContext.UserFavouriteSuperheroes.Add(userFavourite);
         await _dbContext.SaveChangesAsync(ct);
     }
+    
+    public async Task RemoveFavouriteAsync(string userToken, int superheroId, CancellationToken ct)
+    {
+        var foundUserFavourite = _dbContext
+            .UserFavouriteSuperheroes
+            .FirstOrDefault(uf => uf.SuperheroId == superheroId && uf.UserToken == userToken);
+        if (foundUserFavourite is null) return;
+        
+        _dbContext.UserFavouriteSuperheroes.Remove(foundUserFavourite);
+        await _dbContext.SaveChangesAsync(ct);
+    }
 }

@@ -6,5 +6,6 @@ public class EndpointRoutes
     public const string GetFavouriteSuperheroes = "/superheroes/favourites";
     public const string GetSuperheroesById = "/superheroes/{superheroId}";
     public const string MakeSuperheroFavourite = "/superheroes/{superheroId}";
+    public const string RemoveFavouriteSuperhero = "/superheroes/{superheroId}";
 
 }

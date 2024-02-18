@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -97,8 +98,21 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
         }
 
         var deserializedResponse = JsonSerializer.Deserialize<T>(contentString, _jsonSerializerOptions);
-        if (deserializedResponse is null || !deserializedResponse.Success)
+
+        if (deserializedResponse is null)
+        {
             throw new IntegrationReadException("The response was not successful.");
+        }
+        else if (!deserializedResponse.Success)
+        {
+            string responseError = deserializedResponse.Error;
+            if (!string.IsNullOrEmpty(responseError))
+                throw new ValidationException(responseError);
+            else
+            {
+                throw new IntegrationReadException("The response was not successful.");
+            }
+        }
         
         return deserializedResponse;
     }
