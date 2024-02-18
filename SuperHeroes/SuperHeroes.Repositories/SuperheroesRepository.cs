@@ -3,6 +3,9 @@ using SuperHeroes.Core.Contracts;
 
 namespace SuperHeroes.Repositories;
 
+/// <summary>
+/// Represents a repository for superheroes
+/// </summary>
 public sealed class SuperheroesRepository : ISuperheroesRepository
 {
     private readonly SuperheroesDbContext _dbContext;
@@ -11,6 +14,7 @@ public sealed class SuperheroesRepository : ISuperheroesRepository
         _dbContext = dbContext;
     }
     
+    /// <inheritdoc cref="ISuperheroesRepository.GetFavouritesAsync"/>
     public async Task<ICollection<int>> GetFavouritesAsync(string userToken, CancellationToken ct)
     {
         var userFavourites = await _dbContext.UserFavouriteSuperheroes
@@ -20,6 +24,7 @@ public sealed class SuperheroesRepository : ISuperheroesRepository
         return userFavourites;
     }
     
+    /// <inheritdoc cref="ISuperheroesRepository.AddFavouriteAsync"/>
     public async Task AddFavouriteAsync(string userToken, int superheroId, CancellationToken ct)
     {
         if (await _dbContext
@@ -37,6 +42,7 @@ public sealed class SuperheroesRepository : ISuperheroesRepository
         await _dbContext.SaveChangesAsync(ct);
     }
     
+    /// <inheritdoc cref="ISuperheroesRepository.RemoveFavouriteAsync"/>
     public async Task RemoveFavouriteAsync(string userToken, int superheroId, CancellationToken ct)
     {
         var foundUserFavourite = _dbContext

@@ -1,5 +1,8 @@
 namespace SuperHeroes.Api.Endpoints.Shared;
 
+/// <summary>
+/// Represents the endpoint routes
+/// </summary>
 public class EndpointRoutes
 {
     public const string GetSuperheroesByName = "/superheroes/search/{name}";

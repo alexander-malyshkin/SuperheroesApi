@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace SuperHeroes.Application.Shared;
 
+/// <summary>
+/// Represents the base response for all handlers
+/// </summary>
 public class ResponseBase
 {
     public bool Success { get; }

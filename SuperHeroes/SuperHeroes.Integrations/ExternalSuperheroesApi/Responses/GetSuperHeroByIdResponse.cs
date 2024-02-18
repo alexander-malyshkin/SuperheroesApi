@@ -2,6 +2,9 @@ using SuperHeroes.Integrations.ExternalSuperheroesApi.DTOs;
 
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi.Responses;
 
+/// <summary>
+/// Represents the response of a get superhero by id request
+/// </summary>
 public class GetSuperHeroByIdResponse : SuperHeroApiResponseBase
 {
     public string Id { get; set; }

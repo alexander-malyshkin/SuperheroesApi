@@ -6,6 +6,11 @@ using SuperHeroes.Core.Exceptions;
 
 namespace SuperHeroes.Api.Endpoints.Shared;
 
+/// <summary>
+/// Base class for all endpoints in the application.
+/// </summary>
+/// <typeparam name="TRequest"></typeparam>
+/// <typeparam name="TResponse"></typeparam>
 public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TResponse> 
     where TRequest : IRequest<TResponse>
     where TResponse : ResponseBase
@@ -34,6 +39,9 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
         _handlerName = GetType().Name;
     }
     
+    /// <summary>
+    /// Configures the endpoint.
+    /// </summary>
     public sealed override void Configure()
     {
         Verbs(_httpVerb);
@@ -52,6 +60,11 @@ public abstract class EndpointBase<TRequest, TResponse> : Endpoint<TRequest, TRe
     }
     
     
+    /// <summary>
+    /// Handles the request and sends the response (template method pattern)
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="ct"></param>
     public sealed async override Task HandleAsync(TRequest req, CancellationToken ct)
     {
         try

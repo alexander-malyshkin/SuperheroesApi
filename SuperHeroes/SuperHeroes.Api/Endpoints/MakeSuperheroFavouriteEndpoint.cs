@@ -6,6 +6,9 @@ using SuperHeroes.Application.Commands.MakeSuperheroFavourite;
 
 namespace SuperHeroes.Api.Endpoints;
 
+/// <summary>
+/// Represents the endpoint to make a superhero favourite
+/// </summary>
 public class MakeSuperheroFavouriteEndpoint : EndpointBase<MakeSuperheroFavouriteRequest, MakeSuperheroFavouriteResponse>
 {
     private const string MakeSuperheroFavouriteEndpointSummary = "Make a superhero favourite";

@@ -6,6 +6,9 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Application.Commands.RemoveFavouriteSuperhero;
 
+/// <summary>
+/// Represents the command to remove a superhero from the user's favourites list
+/// </summary>
 public class RemoveFavouriteSuperheroHandler : HandlerBase<RemoveFavouriteSuperheroRequest, RemoveFavouriteSuperheroResponse>
 {
     private readonly ISuperheroesExternalProvider _superheroesExternalProvider;

@@ -6,6 +6,9 @@ using SuperHeroes.Application.Commands.RemoveFavouriteSuperhero;
 
 namespace SuperHeroes.Api.Endpoints;
 
+/// <summary>
+/// Represents the endpoint to remove a superhero from the user's favourites list
+/// </summary>
 public class RemoveFavouriteSuperheroEndpoint : EndpointBase<RemoveFavouriteSuperheroRequest, RemoveFavouriteSuperheroResponse>
 {
     private const string EndpointSummary = "Remove a superhero from the user's favourites list";

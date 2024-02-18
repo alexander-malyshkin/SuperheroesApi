@@ -6,6 +6,9 @@ using SuperHeroes.Application.Queries.GetSuperheroesByName;
 
 namespace SuperHeroes.Api.Endpoints;
 
+/// <summary>
+/// Represents the endpoint to search superheroes by name
+/// </summary>
 public class GetSuperHeroesByNameEndpoint : EndpointBase<GetSuperheroesByNameRequest, GetSuperheroesByNameResponse>
 {
     private const string GetSuperheroesByNameSummary = "Get superheroes by name";

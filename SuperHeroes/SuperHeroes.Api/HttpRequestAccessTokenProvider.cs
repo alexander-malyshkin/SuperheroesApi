@@ -17,6 +17,7 @@ public class HttpRequestAccessTokenProvider : IAccessTokenProvider
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <inheritdoc />
     public string GetToken()
     {
         return (_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue(AccessTokenHeader, out StringValues token)

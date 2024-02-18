@@ -6,6 +6,10 @@ using SuperHeroes.Core.Contracts;
 
 namespace SuperHeroes.Integrations.Redis;
 
+/// <summary>
+/// Represents a Redis cache service
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public sealed class RedisService<T> : ICacheService<T>
 {
     private readonly JsonSerializerOptions _jsonSerializerOptions;
@@ -26,6 +30,7 @@ public sealed class RedisService<T> : ICacheService<T>
         _cacheExpiry = TimeSpan.FromSeconds(cacheExpirySeconds);
     }
 
+    /// <inheritdoc cref="ICacheService{T}.GetOrSet"/>
     public async Task<T?> GetOrSet(string key, Func<string, CancellationToken, Task<T?>> factory, CancellationToken ct)
     {
         T? foundValue = await Get(key);

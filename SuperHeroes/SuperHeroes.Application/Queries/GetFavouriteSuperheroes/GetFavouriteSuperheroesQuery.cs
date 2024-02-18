@@ -6,6 +6,9 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Application.Queries.GetFavouriteSuperheroes;
 
+/// <summary>
+/// Represents the query to get the user's favourite superheroes
+/// </summary>
 public class GetFavouriteSuperheroesQuery : HandlerBase<GetFavouriteSuperheroesRequest, GetFavouriteSuperheroesResponse>
 {
     private readonly ISuperheroesExternalProvider _superheroesExternalProvider;

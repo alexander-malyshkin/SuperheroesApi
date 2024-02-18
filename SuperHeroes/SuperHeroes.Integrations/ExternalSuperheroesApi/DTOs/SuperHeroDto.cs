@@ -1,5 +1,8 @@
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi.DTOs;
 
+/// <summary>
+/// Represents a superhero
+/// </summary>
 public class SuperHeroDto
 {
     public string Id { get; set; }

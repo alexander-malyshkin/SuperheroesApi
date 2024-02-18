@@ -1,5 +1,8 @@
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi.DTOs;
 
+/// <summary>
+/// Represents the powerstats of a superhero
+/// </summary>
 public class Powerstats
 {
     public string Intelligence { get; set; }

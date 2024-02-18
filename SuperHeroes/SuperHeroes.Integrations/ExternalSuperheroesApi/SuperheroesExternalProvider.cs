@@ -10,12 +10,16 @@ using SuperHeroes.Integrations.ExternalSuperheroesApi.Responses;
 
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi;
 
+/// <summary>
+/// Represents the external provider for the superheroes API
+/// </summary>
 public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, IDisposable
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<SuperheroesExternalProvider> _logger;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly IAccessTokenProvider _accessTokenProvider;
+    
     public SuperheroesExternalProvider(IHttpClientFactory factory, ILogger<SuperheroesExternalProvider> logger, JsonSerializerOptions jsonSerializerOptions, IAccessTokenProvider accessTokenProvider)
     {
         _logger = logger;
@@ -23,6 +27,8 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
         _accessTokenProvider = accessTokenProvider;
         _httpClient = factory.CreateClient(nameof(SuperheroesExternalProvider));
     }
+    
+    /// <inheritdoc cref="ISuperheroesExternalProvider.SearchByNameAsync"/>
     public async Task<ICollection<SuperHero>> SearchByNameAsync(string name, CancellationToken ct)
     {
         string facebookToken = _accessTokenProvider.GetToken();
@@ -49,6 +55,7 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
         }
     }
 
+    /// <inheritdoc cref="ISuperheroesExternalProvider.GetById"/>
     public async Task<SuperHero?> GetById(int id, CancellationToken ct)
     {
         string facebookToken = _accessTokenProvider.GetToken();

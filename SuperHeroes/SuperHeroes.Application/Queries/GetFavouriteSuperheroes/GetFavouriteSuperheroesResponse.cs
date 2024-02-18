@@ -3,6 +3,9 @@ using SuperHeroes.Application.Shared;
 
 namespace SuperHeroes.Application.Queries.GetFavouriteSuperheroes;
 
+/// <summary>
+/// Represents the response to get the user's favourite superheroes
+/// </summary>
 public class GetFavouriteSuperheroesResponse : ResponseBase
 {
     public ICollection<SuperheroVm> Superheroes { get; init; }

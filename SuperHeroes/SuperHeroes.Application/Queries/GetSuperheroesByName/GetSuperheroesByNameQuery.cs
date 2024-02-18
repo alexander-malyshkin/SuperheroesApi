@@ -6,6 +6,9 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Application.Queries.GetSuperheroesByName;
 
+/// <summary>
+/// Represents the query to get superheroes by their name
+/// </summary>
 public class GetSuperheroesByNameQuery : HandlerBase<GetSuperheroesByNameRequest, GetSuperheroesByNameResponse>
 {
     private readonly ISuperheroesExternalProvider _superheroesExternalProvider;

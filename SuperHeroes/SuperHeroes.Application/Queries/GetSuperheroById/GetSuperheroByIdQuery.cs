@@ -7,6 +7,9 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Application.Queries.GetSuperheroById;
 
+/// <summary>
+/// Represents the query to get a superhero by id
+/// </summary>
 public class GetSuperheroByIdQuery : HandlerBase<GetSuperheroByIdRequest, GetSuperheroByIdResponse>
 {
     private readonly ISuperheroesExternalProvider _superheroesExternalProvider;

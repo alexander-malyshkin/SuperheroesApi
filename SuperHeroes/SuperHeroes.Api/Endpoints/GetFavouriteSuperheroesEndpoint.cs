@@ -6,6 +6,9 @@ using SuperHeroes.Application.Queries.GetFavouriteSuperheroes;
 
 namespace SuperHeroes.Api.Endpoints;
 
+/// <summary>
+/// Represents the endpoint to get favourite superheroes
+/// </summary>
 public class GetFavouriteSuperheroesEndpoint : EndpointBase<GetFavouriteSuperheroesRequest, GetFavouriteSuperheroesResponse>
 {
     private const string GetFavouriteSuperHeroesSummary = "Get favourite superheroes";

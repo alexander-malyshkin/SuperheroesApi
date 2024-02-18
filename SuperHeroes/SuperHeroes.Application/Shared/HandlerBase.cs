@@ -4,6 +4,11 @@ using MediatR;
 
 namespace SuperHeroes.Application.Shared;
 
+/// <summary>
+/// Represents the base class for all handlers (commands and queries)
+/// </summary>
+/// <typeparam name="TRequest"></typeparam>
+/// <typeparam name="TResponse"></typeparam>
 public abstract class HandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> 
     where TRequest : IRequest<TResponse>
     where TResponse : ResponseBase

@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SuperHeroes.Core.Exceptions;
 
+/// <summary>
+/// Represents an entity not found exception
+/// </summary>
 public sealed class EntityNotFoundException : ValidationException
 {
     public string? EntityName { get; }

@@ -4,7 +4,10 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi;
 
-public class CachedSuperheroesExternalProvider : ISuperheroesExternalProvider
+/// <summary>
+/// Represents a cached version of the superheroes external provider (utilizing the Decorator pattern)
+/// </summary>
+public sealed class CachedSuperheroesExternalProvider : ISuperheroesExternalProvider
 {
     private readonly ISuperheroesExternalProvider _externalProvider;
     private readonly ICacheService<SuperHero> _singleSuperheroCacheService;
@@ -20,12 +23,15 @@ public class CachedSuperheroesExternalProvider : ISuperheroesExternalProvider
     }
 
 
+    /// <inheritdoc cref="ISuperheroesExternalProvider.SearchByNameAsync"/>
     public Task<ICollection<SuperHero>> SearchByNameAsync(string name, CancellationToken ct)
     {
         return _multipleSuperheroesCacheBulkService.GetOrSet(name, 
             async (key, ctToken) =>  await _externalProvider.SearchByNameAsync(key, ctToken), 
             ct)!;
     }
+    
+    /// <inheritdoc cref="ISuperheroesExternalProvider.GetById"/>
     public Task<SuperHero?> GetById(int id, CancellationToken ct)
     {
         return _singleSuperheroCacheService.GetOrSet(id.ToString(), 

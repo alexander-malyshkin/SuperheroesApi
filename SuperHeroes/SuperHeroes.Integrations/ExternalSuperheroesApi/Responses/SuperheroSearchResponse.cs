@@ -3,6 +3,9 @@ using SuperHeroes.Integrations.ExternalSuperheroesApi.DTOs;
 
 namespace SuperHeroes.Integrations.ExternalSuperheroesApi.Responses;
 
+/// <summary>
+/// Represents the response from the superhero search endpoint
+/// </summary>
 public class SuperheroSearchResponse : SuperHeroApiResponseBase
 {
     [JsonPropertyName("results-for")]

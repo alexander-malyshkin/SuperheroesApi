@@ -6,6 +6,9 @@ using SuperHeroes.Core.Models;
 
 namespace SuperHeroes.Application.Commands.MakeSuperheroFavourite;
 
+/// <summary>
+/// Represents the command to make a superhero favourite
+/// </summary>
 public class MakeSuperheroFavouriteHandler : HandlerBase<MakeSuperheroFavouriteRequest, MakeSuperheroFavouriteResponse>
 {
     private readonly ISuperheroesRepository _superheroesRepository;
