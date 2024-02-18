@@ -5,11 +5,10 @@ namespace SuperHeroes.Application.Queries.GetSuperheroById;
 
 public class GetSuperheroByIdResponse : ResponseBase
 {
-    public SuperheroVm? Superhero { get; }
+    public SuperheroVm? Superhero { get; init; }
 
-    public GetSuperheroByIdResponse(SuperheroVm? superhero, bool success, string? title = null, string? details = null, bool requestValid = true) 
+    public GetSuperheroByIdResponse(bool success, string? title = null, string? details = null, bool requestValid = true) 
         : base(success, title, details, requestValid)
     {
-        Superhero = superhero;
     }
 }

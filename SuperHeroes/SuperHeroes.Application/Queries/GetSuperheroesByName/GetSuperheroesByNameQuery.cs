@@ -21,19 +21,25 @@ public class GetSuperheroesByNameQuery : HandlerBase<GetSuperheroesByNameRequest
         _superheroesRepository = superheroesRepository;
     }
     protected override GetSuperheroesByNameResponse ConstructSpecificValidationErrorResponse(string errorTitle, string details, bool isValid) =>
-        new GetSuperheroesByNameResponse(Array.Empty<SuperheroVm>(), false, errorTitle, details, isValid);
+        new GetSuperheroesByNameResponse(false, errorTitle, details, isValid);
     
     protected override async Task<GetSuperheroesByNameResponse> HandleInternal(GetSuperheroesByNameRequest request, CancellationToken ct)
     {
         ICollection<SuperHero> superheroes = await _superheroesExternalProvider.SearchByNameAsync(request.Name, ct);
         if (!superheroes.Any())
-            return new GetSuperheroesByNameResponse(Array.Empty<SuperheroVm>(), true);
+            return new GetSuperheroesByNameResponse( true)
+            {
+                Superheroes = Array.Empty<SuperheroVm>()
+            };
 
         var userToken = _accessTokenProvider.GetToken();
         var userFavouriteSuperheroes = await _superheroesRepository.GetFavouritesAsync(userToken, ct);
         
-        var superheroesVm = ConvertToVms(superheroes, userFavouriteSuperheroes).ToArray();
-        return new GetSuperheroesByNameResponse(superheroesVm, true);
+        var superheroesVms = ConvertToVms(superheroes, userFavouriteSuperheroes).ToArray();
+        return new GetSuperheroesByNameResponse(true)
+        {
+            Superheroes = superheroesVms
+        };
     }
     private IEnumerable<SuperheroVm> ConvertToVms(ICollection<SuperHero> superheroes, ICollection<int> userFavouriteSuperheroes)
     {

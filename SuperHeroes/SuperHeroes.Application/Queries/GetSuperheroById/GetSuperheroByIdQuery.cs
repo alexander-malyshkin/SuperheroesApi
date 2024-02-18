@@ -27,7 +27,7 @@ public class GetSuperheroByIdQuery : HandlerBase<GetSuperheroByIdRequest, GetSup
     }
     
     protected override GetSuperheroByIdResponse ConstructSpecificValidationErrorResponse(string errorTitle, string details, bool isValid) =>
-        new GetSuperheroByIdResponse(null, false, errorTitle, details, isValid);
+        new GetSuperheroByIdResponse(false, errorTitle, details, isValid);
     
     protected override async Task<GetSuperheroByIdResponse> HandleInternal(GetSuperheroByIdRequest request, CancellationToken ct)
     {
@@ -39,7 +39,10 @@ public class GetSuperheroByIdQuery : HandlerBase<GetSuperheroByIdRequest, GetSup
         var userFavouriteSuperheroes = await _superheroesRepository.GetFavouritesAsync(userToken, ct);
 
         SuperheroVm superhero = ConvertSuperheroToVm(foundSuperhero, userFavouriteSuperheroes);
-        return new GetSuperheroByIdResponse(superhero, true);
+        return new GetSuperheroByIdResponse(true)
+        {
+            Superhero = superhero
+        };
     }
     private SuperheroVm ConvertSuperheroToVm(SuperHero superHero, ICollection<int> userFavouriteSuperheroes)
     {
