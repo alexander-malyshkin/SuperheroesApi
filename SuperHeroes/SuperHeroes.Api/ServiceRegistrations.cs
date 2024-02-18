@@ -1,3 +1,4 @@
+using System.Text.Json;
 using SuperHeroes.Core.Contracts;
 using SuperHeroes.Integrations.ExternalSuperheroesApi;
 
@@ -9,6 +10,11 @@ public static class ServiceRegistrations
                                                                IConfiguration config)
     {
         services.AddScoped<IAccessTokenProvider, HttpRequestAccessTokenProvider>();
+        services.AddScoped<ISuperheroesExternalProvider, SuperheroesExternalProvider>();
+        services.AddSingleton(new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
         
         services
             .AddHttpClient(nameof(SuperheroesExternalProvider), client =>

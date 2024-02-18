@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Primitives;
 using SuperHeroes.Core.Contracts;
 
 namespace SuperHeroes.Api;
@@ -8,17 +9,18 @@ namespace SuperHeroes.Api;
 /// </summary>
 public class HttpRequestAccessTokenProvider : IAccessTokenProvider
 {
-    private readonly HttpContent _httpContent;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private const string AccessTokenHeader = "Facebook-Access-Token";
     
-    public HttpRequestAccessTokenProvider(HttpContent httpContent)
+    public HttpRequestAccessTokenProvider(IHttpContextAccessor httpContextAccessor)
     {
-        _httpContent = httpContent;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public string GetToken()
     {
-        return _httpContent.Headers.GetValues(AccessTokenHeader).FirstOrDefault()
-            ?? throw new ApplicationException("Access token not found in the request.");
+        return (_httpContextAccessor.HttpContext!.Request.Headers.TryGetValue(AccessTokenHeader, out StringValues token)
+            ? token.FirstOrDefault()
+            : throw new ApplicationException("Access token not found in the request."))!;
     }
 }

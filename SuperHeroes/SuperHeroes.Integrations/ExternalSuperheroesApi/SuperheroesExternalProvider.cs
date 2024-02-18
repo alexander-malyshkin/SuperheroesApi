@@ -87,6 +87,10 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
         {
             return default(T?);
         }
+        else if (response.StatusCode == HttpStatusCode.Forbidden)
+        {
+            throw new UnauthorizedAccessException("The access token is not valid.");
+        } 
         else if (response.StatusCode >= HttpStatusCode.InternalServerError)
         {
             throw new IntegrationReadException(nameof(HttpStatusCode.InternalServerError));

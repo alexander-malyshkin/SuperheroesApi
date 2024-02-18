@@ -1,3 +1,7 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using FastEndpoints;
+using FluentValidation;
 using SuperHeroes.Repositories;
 
 namespace SuperHeroes.Api;
@@ -9,6 +13,13 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddFastEndpoints();
+        builder.Services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssemblies(typeof(SuperHeroes.Application.Shared.ResponseBase).Assembly);
+        });
+        builder.Services.AddValidatorsFromAssembly(typeof(SuperHeroes.Application.Shared.ResponseBase).Assembly);
+        
         builder.Services.AddAuthorization();
         builder.Services.RegisterExternalProviders(builder.Configuration);
 
@@ -31,6 +42,12 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseFastEndpoints(config =>
+        {
+            config.Serializer.Options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            config.Serializer.Options.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        });
 
         app.Run();
     }
