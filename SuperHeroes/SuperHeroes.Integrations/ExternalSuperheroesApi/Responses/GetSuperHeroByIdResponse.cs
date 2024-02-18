@@ -4,5 +4,12 @@ namespace SuperHeroes.Integrations.ExternalSuperheroesApi.Responses;
 
 public class GetSuperHeroByIdResponse : SuperHeroApiResponseBase
 {
-    public SuperHeroDto SuperHero { get; set; }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public Powerstats Powerstats { get; set; }
+    public BiographyDto Biography { get; set; }
+    public AppearanceDto Appearance { get; set; }
+    public Work Work { get; set; }
+    public ConnectionsDto Connections { get; set; }
+    public ImageDto Image { get; set; }
 }

@@ -56,12 +56,12 @@ public sealed class SuperheroesExternalProvider : ISuperheroesExternalProvider, 
         if (superHeroResponse is null)
             return null;
         
-        string heroStringId = superHeroResponse.SuperHero.Id;
+        string heroStringId = superHeroResponse.Id;
         return int.TryParse(heroStringId, out var parsedId)
             ? new SuperHero
             {
                 Id = parsedId,
-                Name = superHeroResponse.SuperHero.Name
+                Name = superHeroResponse.Name
             }
             : null;
     }

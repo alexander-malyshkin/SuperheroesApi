@@ -4,7 +4,7 @@ using MediatR;
 using SuperHeroes.Api.Endpoints.Shared;
 using SuperHeroes.Application.Queries.GetSuperheroesByName;
 
-namespace SuperHeroes.Api.Endpoints.GetSuperHeroesByName;
+namespace SuperHeroes.Api.Endpoints;
 
 public class GetSuperHeroesByNameEndpoint : EndpointBase<GetSuperheroesByNameRequest, GetSuperheroesByNameResponse>
 {
