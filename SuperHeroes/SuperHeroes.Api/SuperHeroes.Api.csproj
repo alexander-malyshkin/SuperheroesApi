@@ -10,8 +10,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SuperHeroes.Application\SuperHeroes.Application.csproj" />
+    <ProjectReference Include="..\SuperHeroes.Core\SuperHeroes.Core.csproj" />
+    <ProjectReference Include="..\SuperHeroes.Integrations\SuperHeroes.Integrations.csproj" />
+    <ProjectReference Include="..\SuperHeroes.Repositories\SuperHeroes.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

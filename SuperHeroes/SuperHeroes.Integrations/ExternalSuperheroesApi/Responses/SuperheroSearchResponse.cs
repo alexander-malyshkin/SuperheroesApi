@@ -1,12 +1,10 @@
 using System.Text.Json.Serialization;
 using SuperHeroes.Integrations.ExternalSuperheroesApi.DTOs;
 
-namespace SuperHeroes.Integrations.ExternalSuperheroesApi;
+namespace SuperHeroes.Integrations.ExternalSuperheroesApi.Responses;
 
-public class SuperheroSearchResponse
+public class SuperheroSearchResponse : SuperHeroApiResponseBase
 {
-    public string Response { get; set; }
-
     [JsonPropertyName("results-for")]
     public string Resultsfor { get; set; }
 
